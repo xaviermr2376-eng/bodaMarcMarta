@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Escape Room – El Candado</title>
+  <style>
+    body {
+      font-family: 'Courier New', monospace;
+      background: radial-gradient(circle at top, #2b2b2b, #000);
+      color: #e0e0e0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .room {
+      background: #111;
+      border: 2px solid #444;
+      padding: 30px;
+      border-radius: 10px;
+      width: 360px;
+      text-align: center;
+      box-shadow: 0 0 25px rgba(255, 0, 0, 0.2);
+    }
+    h1 {
+      margin-bottom: 10px;
+      color: #ff5252;
+    }
+    .hint {
+      font-size: 14px;
+      margin-bottom: 20px;
+      color: #bdbdbd;
+    }
+    .lock {
+      font-size: 60px;
+      margin: 15px 0;
+    }
+    input {
+      width: 100%;
+      padding: 12px;
+      font-size: 20px;
+      text-align: center;
+      border-radius: 6px;
+      border: none;
+      background: #222;
+      color: #fff;
+      letter-spacing: 3px;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 15px;
+      font-size: 16px;
+      border: none;
+      border-radius: 6px;
+      background-color: #b71c1c;
+      color: #fff;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #d32f2f;
+    }
+    .error {
+      color: #ff8a80;
+      margin-top: 15px;
+    }
+    .success {
+      color: #a5ffcf;
+      margin-top: 20px;
+      font-weight: bold;
+      animation: fadeIn 1.2s ease-in-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+  </style>
+</head>
+<body>
+  <div class="room">
+    <h1>ESCAPE ROOM</h1>
+    <div class="lock" id="lock">🔒</div>
+    <p class="hint">La salida está sellada. Solo una fecha importante abrirá el candado.</p>
+
+    <input type="password" id="codigo" placeholder="DDMMAAAA" />
+    <button onclick="verificarCodigo()">Intentar abrir</button>
+
+    <div id="mensaje"></div>
+  </div>
+
+  <script>
+    const CODIGO_CORRECTO = "01022025";
+
+    function verificarCodigo() {
+      const valor = document.getElementById("codigo").value;
+      const mensaje = document.getElementById("mensaje");
+      const lock = document.getElementById("lock");
+
+      if (valor === CODIGO_CORRECTO) {
+        lock.textContent = "🔓";
+        mensaje.innerHTML = '<div class="success">Has descifrado el código.<br><br>Esta es el número de cuenta con el premio:<br><br><strong>123456733777</strong></div>';
+      } else {
+        mensaje.innerHTML = '<div class="error">❌ El candado no se mueve… el código es incorrecto.</div>';
+      }
+    }
+  </script>
+</body>
+</html>
