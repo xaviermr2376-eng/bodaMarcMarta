@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Feliz boda!!</title>
+  <title>Escape Room – El Candado</title>
   <style>
     body {
       font-family: 'Courier New', monospace;
@@ -19,23 +19,33 @@
       background: #111;
       border: 2px solid #444;
       padding: 30px;
-      border-radius: 10px;
-      width: 360px;
+      border-radius: 12px;
+      width: 380px;
       text-align: center;
-      box-shadow: 0 0 25px rgba(255, 0, 0, 0.2);
+      box-shadow: 0 0 30px rgba(255, 0, 0, 0.25);
     }
     h1 {
+      font-size: 18px;
+      margin-bottom: 15px;
+      color: #ff8a80;
+    }
+    .timer {
+      font-size: 16px;
       margin-bottom: 10px;
       color: #ff5252;
+    }
+    .lock {
+      font-size: 70px;
+      margin: 15px 0;
+      transition: transform 0.6s ease;
+    }
+    .lock.open {
+      transform: scale(1.2) rotate(10deg);
     }
     .hint {
       font-size: 14px;
       margin-bottom: 20px;
       color: #bdbdbd;
-    }
-    .lock {
-      font-size: 60px;
-      margin: 15px 0;
     }
     input {
       width: 100%;
@@ -65,24 +75,45 @@
     .error {
       color: #ff8a80;
       margin-top: 15px;
+      animation: shake 0.4s;
     }
     .success {
       color: #a5ffcf;
       margin-top: 20px;
       font-weight: bold;
-      animation: fadeIn 1.2s ease-in-out;
+      animation: fadeIn 1.5s ease-in-out;
+    }
+    .proposal {
+      margin-top: 25px;
+      font-size: 22px;
+      color: #ffccbc;
+      animation: fadeIn 2s ease-in-out;
     }
     @keyframes fadeIn {
-      from { opacity: 0; transform: scale(0.95); }
+      from { opacity: 0; transform: scale(0.9); }
       to { opacity: 1; transform: scale(1); }
+    }
+    @keyframes shake {
+      0% { transform: translateX(0); }
+      25% { transform: translateX(-5px); }
+      50% { transform: translateX(5px); }
+      75% { transform: translateX(-5px); }
+      100% { transform: translateX(0); }
     }
   </style>
 </head>
 <body>
   <div class="room">
     <h1>Para descifrar el código debéis adivinar el código correcto</h1>
-    <div class="lock" id="lock">🔒</div> id="lock">🔒</div>
-    <p class="hint">Pista: ¿en qué fecha os disteis el primer beso?<br><br><strong>Cuidado:</strong> una respuesta incorrecta puede causar discusión antes del <em>SÍ, QUIERO :)</em></p>
+
+    <div class="timer" id="timer">⏳ Tiempo restante: 60s</div>
+
+    <div class="lock" id="lock">🔒</div>
+
+    <p class="hint">
+      Pista: ¿en qué fecha os disteis el primer beso?<br><br>
+      <strong>Cuidado:</strong> una respuesta incorrecta puede causar discusión antes del <em>SÍ, QUIERO :)</em>
+    </p>
 
     <input type="password" id="codigo" placeholder="DDMMAAAA" />
     <button onclick="verificarCodigo()">Intentar abrir</button>
@@ -92,6 +123,17 @@
 
   <script>
     const CODIGO_CORRECTO = "01022025";
+    let tiempo = 60;
+
+    const timerEl = document.getElementById("timer");
+    const interval = setInterval(() => {
+      tiempo--;
+      timerEl.textContent = `⏳ Tiempo restante: ${tiempo}s`;
+      if (tiempo <= 0) {
+        clearInterval(interval);
+        timerEl.textContent = "💥 El tiempo se ha agotado…";
+      }
+    }, 1000);
 
     function verificarCodigo() {
       const valor = document.getElementById("codigo").value;
@@ -99,10 +141,21 @@
       const lock = document.getElementById("lock");
 
       if (valor === CODIGO_CORRECTO) {
+        clearInterval(interval);
         lock.textContent = "🔓";
-        mensaje.innerHTML = '<div class="success">Has descifrado el código.<br><br>Esta es el número de cuenta con el premio:<br><br><strong>123456733777</strong></div>';
+        lock.classList.add("open");
+        mensaje.innerHTML = `
+          <div class="success">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Diamond_ring.svg/512px-Diamond_ring.svg.png" alt="Anillo de compromiso" style="width:160px;margin:20px auto;display:block;" />
+            <div class="proposal">💍 FELIZ BODA 💍</div>
+            <div style="margin-top:15px;font-size:16px;color:#ffffff;">
+              Contraseña para acceder a la cuenta:<br><br>
+              <strong>ContraseñaSaidi</strong>
+            </div>
+          </div>
+        `;
       } else {
-        mensaje.innerHTML = '<div class="error">❌ El candado no se mueve… el código es incorrecto.</div>';
+        mensaje.innerHTML = '<div class="error">❌ El candado no cede… piensa bien la fecha 😬</div>';
       }
     }
   </script>
