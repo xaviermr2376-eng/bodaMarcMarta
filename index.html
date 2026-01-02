@@ -105,6 +105,7 @@
   <script>
     const CODIGO_CORRECTO = "01022025";
     let tiempo = 60;
+    let intentos = 3;
 
     const timerEl = document.getElementById("timer");
     const room = document.getElementById("room");
@@ -135,7 +136,14 @@
           </div>
         `;
       } else {
-        mensaje.innerHTML = "<div class='error'>❌ El candado no se abre… piensa bien la fecha 😬</div>";
+        intentos--;
+        if (intentos > 0) {
+          mensaje.innerHTML = `<div class='error'>❌ Código incorrecto.<br><br>Solo os quedan ${intentos} intentos para ser ricos o para el divorcio...</div>`;
+        } else {
+          clearInterval(interval);
+          boton.disabled = true;
+          mensaje.innerHTML = "<div class='error'>💔 No quedan más intentos… el candado se ha bloqueado.</div>";
+        }
       }
     });
   </script>
