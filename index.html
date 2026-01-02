@@ -40,10 +40,6 @@
     .lock {
       font-size: 70px;
       margin: 15px 0;
-      transition: transform 0.6s ease;
-    }
-    .lock.open {
-      transform: scale(1.2) rotate(10deg);
     }
     .hint {
       font-size: 14px;
@@ -72,46 +68,28 @@
       color: #fff;
       cursor: pointer;
     }
-    button:hover {
-      background-color: #d32f2f;
-    }
+    button:hover { background-color: #d32f2f; }
     .error {
       color: #ff8a80;
       margin-top: 15px;
-      animation: shake 0.4s;
     }
-    .success {
-      color: #a5ffcf;
-      margin-top: 20px;
-      font-weight: bold;
-      animation: fadeIn 1.5s ease-in-out;
+    .final {
+      text-align: center;
+      padding: 40px;
     }
-    .proposal {
-      margin-top: 25px;
-      font-size: 22px;
-      color: #ffccbc;
-      animation: fadeIn 2s ease-in-out;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: scale(0.9); }
-      to { opacity: 1; transform: scale(1); }
-    }
-    @keyframes shake {
-      0% { transform: translateX(0); }
-      25% { transform: translateX(-5px); }
-      50% { transform: translateX(5px); }
-      75% { transform: translateX(-5px); }
-      100% { transform: translateX(0); }
+    .final .title {
+      font-size: 30px;
+      margin-bottom: 25px;
     }
   </style>
 </head>
 <body>
-  <div class="room">
+  <div class="room" id="room">
     <h1>Para descifrar el código debéis adivinar el código correcto</h1>
 
     <div class="timer" id="timer">⏳ Tiempo restante: 60s</div>
 
-    <div class="lock" id="lock">🔒</div>
+    <div class="lock">🔒</div>
 
     <p class="hint">
       Pista: ¿en qué fecha os disteis el primer beso?<br><br>
@@ -119,9 +97,9 @@
     </p>
 
     <input type="password" id="codigo" placeholder="DDMMAAAA" />
-    <button onclick="verificarCodigo()">Intentar abrir</button>
+    <button id="btn">Intentar abrir</button>
 
-    <div id="mensaje" style="display:none;"></div>
+    <div id="mensaje"></div>
   </div>
 
   <script>
@@ -129,6 +107,10 @@
     let tiempo = 60;
 
     const timerEl = document.getElementById("timer");
+    const room = document.getElementById("room");
+    const mensaje = document.getElementById("mensaje");
+    const boton = document.getElementById("btn");
+
     const interval = setInterval(() => {
       tiempo--;
       timerEl.textContent = `⏳ Tiempo restante: ${tiempo}s`;
@@ -138,30 +120,24 @@
       }
     }, 1000);
 
-    function verificarCodigo() {
+    boton.addEventListener("click", () => {
       const valor = document.getElementById("codigo").value;
-      const mensaje = document.getElementById("mensaje");
-      const lock = document.getElementById("lock");
-      const room = document.querySelector('.room');
 
       if (valor === CODIGO_CORRECTO) {
         clearInterval(interval);
         room.innerHTML = `
-          <div class="success" style="padding:40px;">
-            <div class="proposal" style="font-size:30px;letter-spacing:2px;">💍 FELIZ BODA 💍</div>
-            <div style="margin-top:30px;font-size:18px;color:#ffffff;">
+          <div class="final">
+            <div class="title">💍 FELIZ BODA 💍</div>
+            <div>
               Contraseña para acceder a la cuenta:<br><br>
               <strong>ContraseñaSaidi</strong>
             </div>
           </div>
         `;
       } else {
-        mensaje.innerHTML = '<div class="error">❌ El candado no cede… piensa bien la fecha 😬</div>';
+        mensaje.innerHTML = "<div class='error'>❌ El candado no se abre… piensa bien la fecha 😬</div>";
       }
-    } else {
-        mensaje.innerHTML = '<div class="error">❌ El candado no cede… piensa bien la fecha 😬</div>';
-      }
-    }
+    });
   </script>
 </body>
 </html>
