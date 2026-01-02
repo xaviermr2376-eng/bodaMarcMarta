@@ -142,22 +142,23 @@
       const valor = document.getElementById("codigo").value;
       const mensaje = document.getElementById("mensaje");
       const lock = document.getElementById("lock");
+      const room = document.querySelector('.room');
 
       if (valor === CODIGO_CORRECTO) {
         clearInterval(interval);
-        lock.textContent = "🔓";
-        lock.classList.add("open");
-        mensaje.innerHTML = `
-          <div class="success">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Diamond_ring.svg/512px-Diamond_ring.svg.png" alt="Anillo de compromiso" style="width:160px;margin:20px auto;display:block;" />
-            <div class="proposal">💍 FELIZ BODA 💍</div>
-            <div style="margin-top:15px;font-size:16px;color:#ffffff;">
+        room.innerHTML = `
+          <div class="success" style="padding:40px;">
+            <div class="proposal" style="font-size:28px;">💍 FELIZ BODA 💍</div>
+            <div style="margin-top:25px;font-size:18px;color:#ffffff;">
               Contraseña para acceder a la cuenta:<br><br>
               <strong>ContraseñaSaidi</strong>
             </div>
           </div>
         `;
       } else {
+        mensaje.innerHTML = '<div class="error">❌ El candado no cede… piensa bien la fecha 😬</div>';
+      }
+    } else {
         mensaje.innerHTML = '<div class="error">❌ El candado no cede… piensa bien la fecha 😬</div>';
       }
     }
